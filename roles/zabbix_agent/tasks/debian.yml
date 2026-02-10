@@ -1,0 +1,69 @@
+---
+- name: Load OS version on vars
+  include_vars: "debian{{ ansible_distribution_major_version }}.yml"
+
+- name: Archive old zabbix_agent2.conf if it exists
+  become: yes
+  shell: |
+    if [ -f "{{ conf_dest }}" ]; then
+      cp "{{ conf_dest }}" "/etc/zabbix/zabbix_agent2.conf.backup_$(date +%Y.%m.%d)"
+    fi
+  args:
+    executable: /bin/bash
+
+- name: Ensure basic packages are installed
+  become: yes
+  apt:
+    name:
+      - apt-utils
+      - dpkg
+    state: present
+    update_cache: yes
+
+- name: Download Zabbix repo
+  get_url:
+    url: "{{ zabbix_repo_url }}"
+    dest: /tmp/zabbix-release.deb
+
+- name: Install Zabbix repo
+  become: yes
+  apt:
+    deb: /tmp/zabbix-release.deb
+  environment:
+    PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Install zabbix-agent2
+  apt:
+    name: zabbix-agent2
+    state: latest
+
+- name: Copy new zabbix_agent2.conf
+  become: yes
+  copy:
+    src: "{{ conf_src }}"
+    dest: "{{ conf_dest }}"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart zabbix agent
+
+- name: Start and enable zabbix-agent2 service
+  become: yes
+  service:
+    name: zabbix-agent2
+    state: started
+    enabled: yes
+
+- name: Get zabbix-agent2 status
+  become: yes
+  shell: systemctl status zabbix-agent2
+  register: agent_status
+  ignore_errors: yes
+
+- name: Display zabbix-agent2 status
+  debug:
+    msg: "{{ agent_status.stdout_lines }}"

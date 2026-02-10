@@ -1,0 +1,27 @@
+# Ansible
+*.retry
+
+# Vault / secrets
+.ansible_vault_pass
+vault_pass*
+vault_password*
+*vault*.yml
+*.key
+*.pem
+*.priv
+*.pass
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# OS / editor junk
+.DS_Store
+*.swp
+*.swo
+*~
+*.bak
+*.save
+*.tmp
+nano.save

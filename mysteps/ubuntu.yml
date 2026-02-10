@@ -1,0 +1,49 @@
+---
+- name: Load os version on vars
+  include_vars: "ubuntu{{ ansible_distribution_major_version }}.yml"
+
+- name: Download repo
+  get_url:
+      url: "{{ zabbix_repo_url }}" 
+      dest: /tmp/zabbix-release.deb
+
+- name: Install repo
+  apt:
+    deb: /tmp/zabbix-release.deb
+
+- name: Update cache
+  apt:
+    update_cache: yes
+
+- name: Install zabbix-agent2
+  apt:
+    name: zabbix-agent2
+    state: latest
+
+- name: check config
+  debug:
+    var: conf_src
+
+- name: Copy zabbix_config
+  copy:
+    src: '{{ conf_src }}'
+    dest: '{{ conf_dest }}'
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart zabbix agent
+
+- name: Start and Run
+  service:
+    name: zabbix-agent2
+    state: started
+    enabled: yes
+
+- name: Get zabbix-agent2 status
+  shell: systemctl status zabbix-agent2
+  register: agent_status
+  ignore_errors: yes
+
+- name: Status agent
+  debug:
+    msg: "{{ agent_status.stdout_lines }}"
