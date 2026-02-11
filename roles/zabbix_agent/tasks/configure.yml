@@ -1,0 +1,19 @@
+---
+- name: Archive old zabbix_agent2.conf if it exists
+  become: yes
+  shell: |
+    if [ -f "{{ conf_dest }}" ]; then
+      cp "{{ conf_dest }}" "/etc/zabbix/zabbix_agent2.conf.backup_$(date +%Y.%m.%d)"
+    fi
+  args:
+    executable: /bin/bash
+
+- name: Copy zabbix_agent2.conf
+  copy:
+    src: "{{ conf_src }}"
+    dest: "{{ conf_dest }}"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart zabbix agent
+

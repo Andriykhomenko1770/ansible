@@ -1,0 +1,13 @@
+---
+- name: Load OS-specific vars
+  include_vars: "vars/{{ ansible_distribution | lower }}{{ ansible_distribution_major_version }}.yml"
+
+- name: Ensure basic packages are installed
+  become: yes
+  apt:
+    name:
+      - apt-utils
+      - dpkg
+    state: present
+    update_cache: yes
+

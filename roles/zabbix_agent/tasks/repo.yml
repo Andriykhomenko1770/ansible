@@ -1,0 +1,15 @@
+---
+- name: Download Zabbix repo
+  get_url:
+    url: "{{ zabbix_repo_url }}"
+    dest: /tmp/zabbix-release.deb
+
+- name: Install Zabbix repo
+  apt:
+    deb: /tmp/zabbix-release.deb
+  become: yes
+  environment: "{{ zabbix_repo_env }}"
+
+- name: Update apt cache
+  apt:
+    update_cache: yes

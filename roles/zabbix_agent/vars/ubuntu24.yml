@@ -1,5 +1,7 @@
 ---
 zabbix_repo_url: https://repo.zabbix.com/zabbix/7.4/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.4+ubuntu24.04_all.deb
-
+zabbix_repo_env: {}
+conf_src: "zabbix_agent2HWSRV004.conf"
+conf_dest: "/etc/zabbix/zabbix_agent2.conf"
 
 

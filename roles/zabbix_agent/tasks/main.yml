@@ -1,3 +1,7 @@
 ---
-- name: Choose task
-  include_tasks: "{{ ansible_distribution | lower }}.yml"
+- include_tasks: setup.yml
+- include_tasks: repo.yml
+- include_tasks: install.yml
+- include_tasks: configure.yml
+- include_tasks: service.yml
+- include_tasks: status.yml

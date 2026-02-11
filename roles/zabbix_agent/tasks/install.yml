@@ -1,0 +1,5 @@
+---
+- name: Install zabbix-agent2
+  apt:
+    name: zabbix-agent2
+    state: latest

@@ -1,3 +1,2 @@
 ---
 conf_src: zabbix_agent2HWSRV004.conf
-conf_dest: /etc/zabbix/zabbix_agent2.conf

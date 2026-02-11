@@ -1,0 +1,9 @@
+---
+- name: Get zabbix-agent2 status
+  shell: systemctl status zabbix-agent2
+  register: agent_status
+  ignore_errors: yes
+
+- name: Display zabbix-agent2 status
+  debug:
+    msg: "{{ agent_status.stdout_lines }}"
