@@ -1,0 +1,22 @@
+- name: Scan host
+  command: >
+    nmap -sT -sV
+    -oX /tmp/nmap_{{ inventory_hostname }}.xml
+    -oN /tmp/nmap_{{ inventory_hostname }}.txt
+    {{ ansible_host }}
+
+- name: Wait
+  wait_for:
+    path: "/tmp/nmap_{{ inventory_hostname }}.xml"
+    state: present
+    timeout: 10
+
+- name: Fetch result
+  fetch:
+    src: "/tmp/nmap_{{ inventory_hostname }}.{{ item }}"
+    dest: "{{ playbook_dir }}/../nmap_results/"
+    flat: yes
+  loop:
+    - xml
+    - txt
+

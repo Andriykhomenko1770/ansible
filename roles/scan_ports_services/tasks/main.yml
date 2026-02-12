@@ -1,0 +1,4 @@
+---
+- include_tasks: install_nmap.yml 
+- include_tasks: scan_ports.yml
+- include_tasks: remove.yml

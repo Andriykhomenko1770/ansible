@@ -1,6 +1,8 @@
 [HWSRV004]
-zabbix-agents           ansible_host=10.22.0.38       #IT-Department        
 deb11-test              ansible_host=10.22.0.73       #IT-Department
 
 [HWSRV008]
 people                  ansible_host=10.22.0.64       #IT-Department
+
+[docker_setup]
+ansible                 ansible_host=10.22.0.74       #IT-Department

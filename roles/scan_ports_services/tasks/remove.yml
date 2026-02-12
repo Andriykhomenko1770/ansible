@@ -1,0 +1,8 @@
+---
+- name: Remove
+  file:
+    path: "/tmp/nmap_{{ inventory_hostname }}.{{ item }}"
+    state: absent
+  loop:
+    - xml
+    - txt

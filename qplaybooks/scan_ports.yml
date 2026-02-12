@@ -1,0 +1,8 @@
+---
+- name: Scan ports
+  hosts: all
+  become: yes
+  roles:
+    - scan_ports_services
+
+
